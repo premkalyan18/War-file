@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#deploy="false"
+deploy="true"
+
+image=anil
+version=1.0-SNAPSHOT
+latest=true
+
+#OPTIONS="--no-cache --force-rm"
+#OPTIONS="--no-cache"
+#OPTIONS="--force-rm"
+OPTIONS=""
+
+docker build ${OPTIONS} -t marolix/${image}:1.0-SNAPSHOT .
+if [ "$?" -eq 0 ] && [ ${deploy} == "true" ]; then
+    docker push marolix/${image}:1.0-SNAPSHOT
+    if [ "$latest" == "true" ]; then
+        docker tag marolix/${image}:1.0-SNAPSHOT marolix/${image}:latest
+        docker push marolix/${image}:latest
+    fi
+fi
